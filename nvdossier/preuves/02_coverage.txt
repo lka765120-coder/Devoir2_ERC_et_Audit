@@ -1,0 +1,57 @@
+﻿
+Version
+=======
+> solidity-coverage: v0.8.17
+
+Instrumenting for coverage...
+=============================
+
+> CertificateNFT.sol
+> mocks\ReentrantReceiver.sol
+
+Compilation:
+============
+
+Compiled 25 Solidity files successfully (evm target: cancun).
+
+Network Info
+============
+> HardhatEVM: v2.29.2
+> network:    hardhat
+
+
+
+  CertificateNFT
+    mint
+      √ mint réussi : owner, tokenURI, données, event (210ms)
+      √ accès refusé pour un compte sans MINTER_ROLE (45ms)
+      √ double mint du même studentId bloqué
+      √ rejette adresse nulle et champs vides
+      √ tokenIdOfStudent et autres champs vides rejetés (53ms)
+      √ constructeur refuse l'adresse nulle
+    batch
+      √ batch réussi (54ms)
+      √ batch refusé sans rôle, vide, trop gros, ou avec doublon (tout est annulé) (70ms)
+    revoke
+      √ revoke par l'admin : flag + event (56ms)
+      √ minter simple ne peut pas révoquer ; double revoke et token inexistant rejetés (44ms)
+    sécurité
+      √ certificat non transférable (soulbound)
+      √ reentrancy via onERC721Received bloquée (38ms)
+      √ grantRole réservé à l'admin ; supportsInterface ERC-721
+
+
+  13 passing (694ms)
+
+------------------------|----------|----------|----------|----------|----------------|
+File                    |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+------------------------|----------|----------|----------|----------|----------------|
+ contracts\             |      100 |    96.88 |      100 |      100 |                |
+  CertificateNFT.sol    |      100 |    96.88 |      100 |      100 |                |
+ contracts\mocks\       |       50 |      100 |      100 |       50 |                |
+  ReentrantReceiver.sol |       50 |      100 |      100 |       50 |             17 |
+------------------------|----------|----------|----------|----------|----------------|
+All files               |    96.67 |    96.88 |      100 |     97.3 |                |
+------------------------|----------|----------|----------|----------|----------------|
+
+> Istanbul reports written to ./coverage/ and ./coverage.json

@@ -1,0 +1,112 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Preuves d'exécution — Devoir 2</title>
+<style>
+ body{font-family:Segoe UI,Arial,sans-serif;background:#f6f8fa;color:#1f2328;margin:0;padding:28px 40px}
+ h1{font-size:26px;margin:0 0 22px} h2{font-size:17px;margin:26px 0 8px;color:#0969da}
+ pre{background:#fff;border:1px solid #d0d7de;border-radius:8px;padding:14px 18px;font-family:Consolas,monospace;
+     font-size:13px;line-height:1.45;white-space:pre-wrap;margin:0}
+ .ok{color:#1a7f37;font-weight:600}
+</style></head><body>
+<h1>Preuves d'exécution — Devoir 2 (ERC-721 &amp; audit)</h1>
+<h2>1. npm test — 13 tests réussis</h2><pre>
+&gt; certification-blockchain@1.0.0 test
+&gt; hardhat test
+
+
+
+  CertificateNFT
+    mint
+      √ mint réussi : owner, tokenURI, données, event (1614ms)
+      √ accès refusé pour un compte sans MINTER_ROLE (52ms)
+      √ double mint du même studentId bloqué
+      √ rejette adresse nulle et champs vides
+      √ tokenIdOfStudent et autres champs vides rejetés
+      √ constructeur refuse l'adresse nulle
+    batch
+      √ batch réussi
+      √ batch refusé sans rôle, vide, trop gros, ou avec doublon (tout est annulé) (49ms)
+    revoke
+      √ revoke par l'admin : flag + event
+      √ minter simple ne peut pas révoquer ; double revoke et token inexistant rejetés
+    sécurité
+      √ certificat non transférable (soulbound)
+      √ reentrancy via onERC721Received bloquée
+      √ grantRole réservé à l'admin ; supportsInterface ERC-721
+
+
+  13 passing (2s)
+
+</pre>
+<h2>2. npx hardhat coverage — 100 % lignes sur CertificateNFT.sol</h2><pre>
+Version
+=======
+&gt; solidity-coverage: v0.8.17
+
+Instrumenting for coverage...
+=============================
+
+&gt; CertificateNFT.sol
+&gt; mocks\ReentrantReceiver.sol
+
+Compilation:
+============
+
+Compiled 25 Solidity files successfully (evm target: cancun).
+
+Network Info
+============
+&gt; HardhatEVM: v2.29.2
+&gt; network:    hardhat
+
+
+
+  CertificateNFT
+    mint
+      √ mint réussi : owner, tokenURI, données, event (210ms)
+      √ accès refusé pour un compte sans MINTER_ROLE (45ms)
+      √ double mint du même studentId bloqué
+      √ rejette adresse nulle et champs vides
+      √ tokenIdOfStudent et autres champs vides rejetés (53ms)
+      √ constructeur refuse l'adresse nulle
+    batch
+      √ batch réussi (54ms)
+      √ batch refusé sans rôle, vide, trop gros, ou avec doublon (tout est annulé) (70ms)
+    revoke
+      √ revoke par l'admin : flag + event (56ms)
+      √ minter simple ne peut pas révoquer ; double revoke et token inexistant rejetés (44ms)
+    sécurité
+      √ certificat non transférable (soulbound)
+      √ reentrancy via onERC721Received bloquée (38ms)
+      √ grantRole réservé à l'admin ; supportsInterface ERC-721
+
+
+  13 passing (694ms)
+
+------------------------|----------|----------|----------|----------|----------------|
+File                    |  % Stmts | % Branch |  % Funcs |  % Lines |Uncovered Lines |
+------------------------|----------|----------|----------|----------|----------------|
+ contracts\             |      100 |    96.88 |      100 |      100 |                |
+  CertificateNFT.sol    |      100 |    96.88 |      100 |      100 |                |
+ contracts\mocks\       |       50 |      100 |      100 |       50 |                |
+  ReentrantReceiver.sol |       50 |      100 |      100 |       50 |             17 |
+------------------------|----------|----------|----------|----------|----------------|
+All files               |    96.67 |    96.88 |      100 |     97.3 |                |
+------------------------|----------|----------|----------|----------|----------------|
+
+&gt; Istanbul reports written to ./coverage/ and ./coverage.json
+</pre>
+<h2>3. npm run deploy:local — adresse et tx de déploiement</h2><pre>
+&gt; certification-blockchain@1.0.0 deploy:local
+&gt; hardhat run scripts/deploy.js --network localhost
+
+Compiled 25 Solidity files successfully (evm target: cancun).
+CertificateNFT deploye a : 0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9
+Admin / minter : 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+Tx de deploiement : 0xe71d6314e8d506a1de5f42906f5e0e8b1911c5407140da42e68f15a82bb6ab35
+ABI ecrite dans C:\Users\ACHRAF\Downloads\certification\certification\frontend\src\contract.json
+</pre>
+<h2>4. Mint de démonstration — tokenId 1 et tokenURI</h2><pre>Mint tx : 0xd43b77a4b4e7e00b35e0aeba2707cc7f9348dc6fad9c9f2a09efc39a2819f0b1
+Total minted : 1
+tokenURI(1) : data:application/json;base64,eyJuYW1lIjoiTGljZW5jZSBJbmZvcm1hdGlxdWUgLSBBbWluYSBCZW5hbGkiLCJkZXNjcmlwdGlvbiI6IkNlcnRpZmljYXQgYWNhZGVtaXF1ZSBkZWxpdnJlIGEgQW1pbmEgQmVuYWxpIiwiYXR0cmlidXRlcyI6W3sidHJhaXRfdHlwZSI6InN0dWRlbnRJZCIsInZhbHVlIjoiMjAyMy1JTkYtMDQyIn0seyJ0cmFpdF90eXBlIjoiaXNzdWVEYXRlIiwidmFsdWUiOiIyMDI2LTA2LTE1In0seyJ0cmFpdF90eXBlIjoiZ3JhZGUiLCJ2YWx1ZSI6Ik1lbnRpb24gQmllbiJ9XX0=
+</pre>
+</body></html>

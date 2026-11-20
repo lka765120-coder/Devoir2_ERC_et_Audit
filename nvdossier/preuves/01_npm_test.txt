@@ -1,0 +1,28 @@
+﻿
+> certification-blockchain@1.0.0 test
+> hardhat test
+
+
+
+  CertificateNFT
+    mint
+      √ mint réussi : owner, tokenURI, données, event (1614ms)
+      √ accès refusé pour un compte sans MINTER_ROLE (52ms)
+      √ double mint du même studentId bloqué
+      √ rejette adresse nulle et champs vides
+      √ tokenIdOfStudent et autres champs vides rejetés
+      √ constructeur refuse l'adresse nulle
+    batch
+      √ batch réussi
+      √ batch refusé sans rôle, vide, trop gros, ou avec doublon (tout est annulé) (49ms)
+    revoke
+      √ revoke par l'admin : flag + event
+      √ minter simple ne peut pas révoquer ; double revoke et token inexistant rejetés
+    sécurité
+      √ certificat non transférable (soulbound)
+      √ reentrancy via onERC721Received bloquée
+      √ grantRole réservé à l'admin ; supportsInterface ERC-721
+
+
+  13 passing (2s)
+
